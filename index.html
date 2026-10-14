@@ -65,21 +65,19 @@
             flex: 1;
             width: 100%;
             border: none;
-            background-color: #fff; /* İçerik yüklenene kadar beyaz/arka plan */
+            background-color: #161b22;
         }
     </style>
 </head>
 <body>
 
-    <!-- Üst Kısım: Arama Çubuğu -->
     <div class="header">
         <form class="search-box" id="searchForm" onsubmit="performSearch(event)">
-            <input type="text" id="searchInput" placeholder="Aramak istediğin şeyi yaz veya site adresi gir..." required autofocus>
-            <button type="submit">Git</button>
+            <input type="text" id="searchInput" placeholder="Aramak istediğin şeyi yaz..." required autofocus>
+            <button type="submit">Ara</button>
         </form>
     </div>
 
-    <!-- Alt Kısım: Her şeyin içinde açıldığı pencere (iframe) -->
     <iframe id="proxyFrame" name="proxyFrame" class="content-frame" src="https://songsterr-proxy.sevilbulutsg.workers.dev"></iframe>
 
     <script>
@@ -88,7 +86,7 @@
             const query = document.getElementById('searchInput').value;
             const iframe = document.getElementById('proxyFrame');
             
-            // Kullanıcının yazdığı aramayı kendi worker proxy adresimize yönlendirip iframe içinde açıyoruz
+            // DuckDuckGo arama sorgusunu worker üzerinden iframe'e yüklüyoruz
             iframe.src = "https://songsterr-proxy.sevilbulutsg.workers.dev/?q=" + encodeURIComponent(query);
         }
     </script>

@@ -3,71 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GitHub Proxy Portal</title>
+    <title>Okul Bypass Portal</title>
     <style>
         * { box-sizing: border-box; }
         body, html {
             margin: 0; padding: 0; width: 100%; height: 100%;
-            background-color: #0d1117; color: #c9d1d9;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #0b0f19; color: #f3f4f6;
+            font-family: system-ui, -apple-system, sans-serif;
             display: flex; flex-direction: column; overflow: hidden;
         }
-        .header {
-            padding: 12px 20px; background-color: #161b22;
-            border-bottom: 1px solid #30363d; display: flex;
-            justify-content: center; align-items: center; gap: 10px;
+        .top-bar {
+            padding: 12px 16px; background-color: #111827;
+            border-bottom: 1px solid #1f2937; display: flex;
+            justify-content: center; align-items: center; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3);
         }
-        .search-box {
-            display: flex; width: 100%; max-width: 700px;
-            background-color: #0d1117; border: 1px solid #30363d;
-            border-radius: 25px; overflow: hidden;
+        .search-wrapper {
+            display: flex; width: 100%; max-width: 800px;
+            background-color: #1f2937; border: 1px solid #374151;
+            border-radius: 9999px; overflow: hidden;
         }
-        .search-box:focus-within { border-color: #58a6ff; }
+        .search-wrapper:focus-within { border-color: #3b82f6; }
         input[type="text"] {
-            flex: 1; padding: 10px 20px; font-size: 15px;
-            background: transparent; border: none; color: #f0f6fc; outline: none;
+            flex: 1; padding: 12px 20px; font-size: 16px;
+            background: transparent; border: none; color: #ffffff; outline: none;
         }
         button {
-            padding: 0 25px; background-color: #238636; color: white;
-            border: none; font-size: 15px; font-weight: bold; cursor: pointer;
+            padding: 0 28px; background-color: #2563eb; color: white;
+            border: none; font-size: 15px; font-weight: 600; cursor: pointer;
+            transition: background 0.2s;
         }
-        button:hover { background-color: #2ea043; }
-        .content-container {
-            flex: 1; width: 100%; position: relative; background-color: #ffffff;
+        button:hover { background-color: #1d4ed8; }
+        .frame-container {
+            flex: 1; width: 100%; height: 100%; background: #ffffff;
         }
         iframe {
-            width: 100%; height: 100%; border: none; background: #fff;
+            width: 100%; height: 100%; border: none; background: #ffffff;
         }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <form class="search-box" onsubmit="loadSite(event)">
-            <input type="text" id="urlInput" placeholder="Aramak istediğin kelimeyi veya site adresini yaz (örn: google.com)" required autofocus>
+    <div class="top-bar">
+        <form class="search-wrapper" onsubmit="executeBypass(event)">
+            <input type="text" id="userInput" placeholder="Aramak istediğin kelimeyi veya siteyi yaz..." required autofocus>
             <button type="submit">Git</button>
         </form>
     </div>
 
-    <div class="content-container">
-        <!-- DuckDuckGo HTML sürümü iframe engeline takılmadığı için doğrudan burada kusursuz görünür -->
-        <iframe id="displayFrame" src="https://html.duckduckgo.com/html/"></iframe>
+    <div class="frame-container">
+        <!-- Başlangıç olarak proxy worker adresimizi yüklüyoruz -->
+        <iframe id="mainFrame" src="https://songsterr-proxy.sevilbulutsg.workers.dev/"></iframe>
     </div>
 
     <script>
-        function loadSite(event) {
+        const WORKER_URL = "https://songsterr-proxy.sevilbulutsg.workers.dev/";
+
+        function executeBypass(event) {
             event.preventDefault();
-            const input = document.getElementById('urlInput').value.trim();
-            const frame = document.getElementById('displayFrame');
-            
-            if (input.includes('.') && !input.includes(' ')) {
-                // Eğer bir web sitesi yazıldıysa doğrudan o siteyi yükle
-                let target = input;
+            const val = document.getElementById('userInput').value.trim();
+            const frame = document.getElementById('mainFrame');
+
+            if (val.includes('.') && !val.includes(' ')) {
+                // Eğer web sitesi girildiyse
+                let target = val;
                 if (!target.startsWith('http')) target = 'https://' + target;
-                frame.src = "https://songsterr-proxy.sevilbulutsg.workers.dev/__h/" + target;
+                frame.src = WORKER_URL + "?url=" + encodeURIComponent(target);
             } else {
-                // Arama kelimesiyse DuckDuckGo üzerinden sonuçları getir
-                frame.src = "https://html.duckduckgo.com/html/?q=" + encodeURIComponent(input);
+                // Kelime aramasıysa
+                frame.src = WORKER_URL + "?q=" + encodeURIComponent(val);
             }
         }
     </script>

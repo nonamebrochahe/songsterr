@@ -3,91 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Özel Proxy Arama Penceresi</title>
+    <title>GitHub Proxy Portal</title>
     <style>
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
         body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #0d1117;
-            color: #c9d1d9;
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background-color: #0d1117; color: #c9d1d9;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
+            display: flex; flex-direction: column; overflow: hidden;
         }
         .header {
-            padding: 15px 20px;
-            background-color: #161b22;
-            border-bottom: 1px solid #30363d;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            padding: 12px 20px; background-color: #161b22;
+            border-bottom: 1px solid #30363d; display: flex;
+            justify-content: center; align-items: center; gap: 10px;
         }
         .search-box {
-            display: flex;
-            width: 100%;
-            max-width: 600px;
-            background-color: #0d1117;
-            border: 1px solid #30363d;
-            border-radius: 25px;
-            overflow: hidden;
+            display: flex; width: 100%; max-width: 700px;
+            background-color: #0d1117; border: 1px solid #30363d;
+            border-radius: 25px; overflow: hidden;
         }
-        .search-box:focus-within {
-            border-color: #58a6ff;
-        }
+        .search-box:focus-within { border-color: #58a6ff; }
         input[type="text"] {
-            flex: 1;
-            padding: 10px 20px;
-            font-size: 15px;
-            background: transparent;
-            border: none;
-            color: #f0f6fc;
-            outline: none;
+            flex: 1; padding: 10px 20px; font-size: 15px;
+            background: transparent; border: none; color: #f0f6fc; outline: none;
         }
         button {
-            padding: 0 25px;
-            background-color: #238636;
-            color: white;
-            border: none;
-            font-size: 15px;
-            font-weight: bold;
-            cursor: pointer;
+            padding: 0 25px; background-color: #238636; color: white;
+            border: none; font-size: 15px; font-weight: bold; cursor: pointer;
         }
-        button:hover {
-            background-color: #2ea043;
+        button:hover { background-color: #2ea043; }
+        .content-container {
+            flex: 1; width: 100%; position: relative; background-color: #ffffff;
         }
-        .content-frame {
-            flex: 1;
-            width: 100%;
-            border: none;
-            background-color: #161b22;
+        iframe {
+            width: 100%; height: 100%; border: none; background: #fff;
         }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <form class="search-box" id="searchForm" onsubmit="performSearch(event)">
-            <input type="text" id="searchInput" placeholder="Aramak istediğin şeyi yaz..." required autofocus>
-            <button type="submit">Ara</button>
+        <form class="search-box" onsubmit="loadSite(event)">
+            <input type="text" id="urlInput" placeholder="Aramak istediğin kelimeyi veya site adresini yaz (örn: google.com)" required autofocus>
+            <button type="submit">Git</button>
         </form>
     </div>
 
-    <iframe id="proxyFrame" name="proxyFrame" class="content-frame" src="https://songsterr-proxy.sevilbulutsg.workers.dev"></iframe>
+    <div class="content-container">
+        <!-- DuckDuckGo HTML sürümü iframe engeline takılmadığı için doğrudan burada kusursuz görünür -->
+        <iframe id="displayFrame" src="https://html.duckduckgo.com/html/"></iframe>
+    </div>
 
     <script>
-        function performSearch(event) {
+        function loadSite(event) {
             event.preventDefault();
-            const query = document.getElementById('searchInput').value;
-            const iframe = document.getElementById('proxyFrame');
+            const input = document.getElementById('urlInput').value.trim();
+            const frame = document.getElementById('displayFrame');
             
-            // DuckDuckGo arama sorgusunu worker üzerinden iframe'e yüklüyoruz
-            iframe.src = "https://songsterr-proxy.sevilbulutsg.workers.dev/?q=" + encodeURIComponent(query);
+            if (input.includes('.') && !input.includes(' ')) {
+                // Eğer bir web sitesi yazıldıysa doğrudan o siteyi yükle
+                let target = input;
+                if (!target.startsWith('http')) target = 'https://' + target;
+                frame.src = "https://songsterr-proxy.sevilbulutsg.workers.dev/__h/" + target;
+            } else {
+                // Arama kelimesiyse DuckDuckGo üzerinden sonuçları getir
+                frame.src = "https://html.duckduckgo.com/html/?q=" + encodeURIComponent(input);
+            }
         }
     </script>
 

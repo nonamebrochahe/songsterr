@@ -13,9 +13,12 @@
       border-radius: 8px; font: 600 14px sans-serif; text-decoration: none;
     }
   </style>
+  <script src="https://unpkg.com/@ungap/custom-elements/es.js"></script>
+  <script type="module" src="https://unpkg.com/@niutech/x-frame-bypass"></script>
 </head>
 <body>
-  <iframe src="https://www.songsterr.com/" allow="autoplay; fullscreen" allowfullscreen></iframe>
+  <iframe is="x-frame-bypass" src="https://www.songsterr.com/"
+          allow="autoplay; fullscreen" allowfullscreen></iframe>
   <a class="btn" href="https://www.songsterr.com/" target="_blank" rel="noopener">Yeni sekmede aç</a>
 </body>
 </html>

@@ -3,40 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Songsterr Proxy Arayüzü</title>
+    <title>Özel Proxy Arama Motoru</title>
     <style>
-        body, html {
+        * {
+            box-sizing: border-box;
+        }
+        body {
             margin: 0;
             padding: 0;
+            background-color: #0d1117;
+            color: #c9d1d9;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .search-container {
+            text-align: center;
             width: 100%;
-            height: 100%;
+            max-width: 650px;
+            padding: 20px;
+        }
+        h1 {
+            color: #58a6ff;
+            margin-bottom: 25px;
+            font-size: 2.5rem;
+            letter-spacing: -1px;
+        }
+        .search-box {
+            display: flex;
+            width: 100%;
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 35px;
             overflow: hidden;
-            background-color: #121212;
-            color: #fff;
-            font-family: sans-serif;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+            transition: border-color 0.2s;
         }
-        iframe {
-            width: 100%;
-            height: 100%;
+        .search-box:focus-within {
+            border-color: #58a6ff;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 18px 25px;
+            font-size: 17px;
+            background: transparent;
             border: none;
+            color: #f0f6fc;
+            outline: none;
         }
-        .loading {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 18px;
-            color: #888;
-            z-index: -1;
+        button {
+            padding: 0 35px;
+            background-color: #238636;
+            color: white;
+            border: none;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background-color: #2ea043;
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 13px;
+            color: #8b949e;
         }
     </style>
 </head>
 <body>
 
-    <div class="loading">Proxy üzerinden yükleniyor...</div>
-
-    <!-- Doğrudan kendi Workers proxy adresini hedef gösteriyoruz -->
-    <iframe src="https://songsterr-proxy.sevilbulutsg.workers.dev" allow="autoplay; encrypted-media; fullscreen"></iframe>
+    <div class="search-container">
+        <h1>Güvenli Proxy Arama</h1>
+        <!-- Kendi Cloudflare Worker adresine istek gönderen form -->
+        <form class="search-box" action="https://songsterr-proxy.sevilbulutsg.workers.dev" method="GET">
+            <input type="text" name="q" placeholder="Aramak istediğin şeyi yaz..." required autofocus>
+            <button type="submit">Ara</button>
+        </form>
+        <div class="footer">Tüm sorgular proxy güvencesiyle şifrelenir.</div>
+    </div>
 
 </body>
 </html>
